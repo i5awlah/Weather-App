@@ -86,15 +86,15 @@ class MainActivity : AppCompatActivity() {
             val wind = jsonObject.getJSONObject("wind").getString("gust")
             val pressure = jsonObject.getJSONObject("main").getString("pressure")
             val humidity = jsonObject.getJSONObject("main").getString("humidity")
-            val currentDate = SimpleDateFormat("dd/MM/yyyy hh:mm a").format(Date())
+            val currentDate = SimpleDateFormat("dd/MM/yyyy hh:mm:ss a").format(Date())
 
             binding.tvAddress.text = "$city, $country"
             binding.tvDate.text = "Updated at: $currentDate"
 
             binding.tvWeatherDescription.text = "$weather"
             binding.tvTemp.text = "$temp°C"
-            binding.tvTempMin.text = "Low: $tempMin°C"
-            binding.tvTempMax.text = "High: $tempMax°C"
+            binding.tvTempMin.text = "$tempMin°C"
+            binding.tvTempMax.text = "$tempMax°C"
 
             binding.tvSunrise.text = SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(Date(sunrise*1000))
             binding.tvSunset.text = SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(Date(sunset*1000))
@@ -135,13 +135,13 @@ class MainActivity : AppCompatActivity() {
             val tempMinF = convertToFahrenheit(tempMin)
             val tempMaxF = convertToFahrenheit(tempMax)
             binding.tvTemp.text = "$tempF°F"
-            binding.tvTempMin.text = "Low: $tempMinF°F"
-            binding.tvTempMax.text = "High: $tempMaxF°F"
+            binding.tvTempMin.text = "$tempMinF°F"
+            binding.tvTempMax.text = "$tempMaxF°F"
             degree = "Fahrenheit"
         } else {
             binding.tvTemp.text = "$temp°C"
-            binding.tvTempMin.text = "Low: $tempMin°C"
-            binding.tvTempMax.text = "High: $tempMax°C"
+            binding.tvTempMin.text = "$tempMin°C"
+            binding.tvTempMax.text = "$tempMax°C"
             degree = "Celsius"
         }
     }
