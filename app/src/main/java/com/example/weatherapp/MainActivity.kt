@@ -21,7 +21,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val keyAPI = "2cc6cbc08795a7a645e342454eb65497"
-    private var zipCode = "10001"
+    private var zipCode = "90001"
 
     private var temp = 0
     private var tempMin = 0
@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
             tempMax = jsonObject.getJSONObject("main").getDouble("temp_max").toInt()
             val sunrise = jsonObject.getJSONObject("sys").getLong("sunrise")
             val sunset = jsonObject.getJSONObject("sys").getLong("sunset")
-            val wind = jsonObject.getJSONObject("wind").getString("gust")
+            val wind = jsonObject.getJSONObject("wind").getString("speed")
             val pressure = jsonObject.getJSONObject("main").getString("pressure")
             val humidity = jsonObject.getJSONObject("main").getString("humidity")
             val currentDate = SimpleDateFormat("dd/MM/yyyy hh:mm:ss a").format(Date())
