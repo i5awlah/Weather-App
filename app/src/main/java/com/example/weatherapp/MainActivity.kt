@@ -23,6 +23,12 @@ class MainActivity : AppCompatActivity() {
     private val keyAPI = "2cc6cbc08795a7a645e342454eb65497"
     private var zipCode = "10001"
 
+    private var temp = 0
+    private var tempMin = 0
+    private var tempMax = 0
+
+    private var degree = "Celsius"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -39,6 +45,11 @@ class MainActivity : AppCompatActivity() {
         // Allow users to retry fetching data if error occurs (the city should also be reset to a valid zip code)
         binding.llRefresh.setOnClickListener {
             fetchAPI()
+        }
+
+        // Allow users to switch between Celsius and Fahrenheit (convert within app or fetch different API data)
+        binding.tvTemp.setOnClickListener {
+            checkDegree()
         }
     }
 
@@ -66,10 +77,10 @@ class MainActivity : AppCompatActivity() {
             val city = jsonObject.getString("name")
             val country = jsonObject.getJSONObject("sys").getString("country")
             val weather =
-                jsonObject.getJSONArray("weather").getJSONObject(0).getString("description")
-            val temp = jsonObject.getJSONObject("main").getString("temp").toDouble().toInt()
-            val tempMin = jsonObject.getJSONObject("main").getString("temp_min").toDouble().toInt()
-            val tempMax = jsonObject.getJSONObject("main").getString("temp_max").toDouble().toInt()
+                jsonObject.getJSONArray("weather").getJSONObject(0).getString("description").capitalize()
+            temp = jsonObject.getJSONObject("main").getDouble("temp").toInt()
+            tempMin = jsonObject.getJSONObject("main").getDouble("temp_min").toInt()
+            tempMax = jsonObject.getJSONObject("main").getDouble("temp_max").toInt()
             val sunrise = jsonObject.getJSONObject("sys").getLong("sunrise")
             val sunset = jsonObject.getJSONObject("sys").getLong("sunset")
             val wind = jsonObject.getJSONObject("wind").getString("gust")
@@ -117,5 +128,24 @@ class MainActivity : AppCompatActivity() {
     private fun changeZipCode(newZipCode: String) {
         zipCode = newZipCode
         fetchAPI()
+    }
+    private fun checkDegree() {
+        if(degree == "Celsius") {
+            val tempF = convertToFahrenheit(temp)
+            val tempMinF = convertToFahrenheit(tempMin)
+            val tempMaxF = convertToFahrenheit(tempMax)
+            binding.tvTemp.text = "$tempF°F"
+            binding.tvTempMin.text = "Low: $tempMinF°F"
+            binding.tvTempMax.text = "High: $tempMaxF°F"
+            degree = "Fahrenheit"
+        } else {
+            binding.tvTemp.text = "$temp°C"
+            binding.tvTempMin.text = "Low: $tempMin°C"
+            binding.tvTempMax.text = "High: $tempMax°C"
+            degree = "Celsius"
+        }
+    }
+    private fun convertToFahrenheit(temp: Int) : Int {
+        return  ((temp * 1.8) + 32).toInt()
     }
 }
